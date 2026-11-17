@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <cstdlib>
 
 void matr(int**& matrix, int n, int m) {
 	matrix = new int*[n];
@@ -22,14 +23,47 @@ void dlt(int** matrix, int n) {
 	delete[] matrix;
 }
 
+void randv(int** matrix, int n, int m, int c, int b) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			matrix[i][j] = c + rand() % (b - c + 1);
+		}
+	}
+}
+
 int main() {
+	std::cout << "Vvedite razmer matrix";
+	std::string s;
 	int n, m;
 	std::cin >> n >> m;
 	int** matrixA = nullptr;
 	int** matrixB = nullptr;
 	matr(matrixA, n, m);
 	matr(matrixB, n, m);
-	scan(matrixA, n, m);
+	std::cout << "Vyberite 'random' ili 'vvesti'" << std::endl;
+	std::cin >> s;
+	if (s == "random") {
+		int c, b;
+		std::cout << "Vvedite diapazon";
+		std::cin >> c >> b;
+		if (c > b) {
+			int te = c;
+			c = b;
+			b = te;
+		}
+		randv(matrixA, n, m, c, b);
+		
+	}
+	else if (s == "vvesti") {
+		std::cout << "vvedite elementi" << std::endl;
+		scan(matrixA, n, m);
+	}
+	else {
+		std::cout << "error";
+		dlt(matrixA, n);
+		dlt(matrixB, n);
+		return 1;
+	}
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			matrixB[i][j] = 0;

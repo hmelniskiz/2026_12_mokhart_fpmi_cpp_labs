@@ -1,26 +1,54 @@
 #include <iostream>
+#include <cstdlib>
+
+int const maxsize = 1000;
 
 bool vvod(int& n) {
 	if (!(std::cin >> n)) {
 		std::cout << "ne chislo";
-		return 0;
+		return false;
 	}
-	return 1;
+	return true;
+}
+
+void randv(int(&a)[maxsize], int n, int c, int b) {
+	for (int i = 0; i < n; i++) {
+		a[i] = c + rand() % (b - c + 1);
+	}
 }
 
 int main() {
+	std::string s;
 	int n, maxleft = 0, maxright = 0;
-	int const maxsize = 1000;
 	std::cout << "vvedite razmer" << std::endl;
 	if (!(vvod(n))) {
 		return 1;
 	}
+	std::cout << "Vyberite 'random' ili 'vvesti'" << std::endl;
+	std::cin >> s;
 	int a[maxsize];
-	std::cout << "vvedite elementi" << std::endl;
-	for (int i = 0; i < n; i++) {
-		if (!(vvod(a[i]))) {
-			return 1;
+	if (s == "random") {
+		int c, b;
+		std::cout << "Vvedite diapazon";
+		std::cin >> c >> b;
+		if (c > b) {
+			int te = c;
+			c = b;
+			b = te;
 		}
+		randv(a, n, c, b);
+	}
+	else if (s == "vvesti") {
+		std::cout << "vvedite elementi" << std::endl;
+		for (int i = 0; i < n; i++) {
+			if (!(vvod(a[i]))) {
+				return 1;
+			}
+		}
+	}
+	else {
+		std::cout << "error";
+		return 1;
 	}
 	for (int i = 0; i < n; i++) {
 		int right, left;
@@ -34,7 +62,7 @@ int main() {
 				}
 				right++;
 				left--;
-			}
+			} 
 		}
 		if (i < n - 2 && a[i] == a[i + 2]) {
 			right = i + 2;
